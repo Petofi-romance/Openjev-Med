@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-  <strong>An open-source, locally deployable, rigorously calibrated medical decision-gating model.</strong>
+  <strong>An open-source, locally deployable, rigorously calibrated medical jev model.</strong>
 </p>
 
 <p align="center">
