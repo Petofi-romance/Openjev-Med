@@ -1,106 +1,96 @@
 <h1 align="center">
-  Medical-Openjev
+  medical-openjev
   <img src="web/logo/清华大学-logo-1024px.png" alt="Tsinghua University" height="42" align="absmiddle">
   <img src="web/logo/山东大学-logo-1024px.png" alt="Shandong University" height="42" align="absmiddle">
   <img src="web/logo/香港城市大学（东莞）-logo-1024px.png" alt="City University of Hong Kong (Dongguan)" height="42" align="absmiddle">
 </h1>
 
 <p align="center">
-  <strong>An open, local-first, calibrated medical decision gate for trustworthy AI agents.</strong>
+  <strong>An open-source, locally deployable, rigorously calibrated medical decision-gating model.</strong>
 </p>
 
 <p align="center">
   <a href="https://arxiv.org">📄 arXiv</a>&nbsp;·&nbsp;
-  <a href="https://huggingface.co/Qwen/Qwen3.5-4B">🤗 HFPaper</a>
+  <a href="https://huggingface.co/Qwen/Qwen3.5-4B">🤗 Hugging Face</a>
 </p>
-
-
 
 <p align="center">
-  <img src="web/assets/medical-openjev-method.svg" alt="medical-openjev evaluates evidence sufficiency and specialty routing to decide whether a medical LLM output should act or escalate" width="900">
+  <img src="web/assets/medical-openjev-method.svg" alt="medical-openjev evaluates evidence sufficiency and specialty routing to decide whether a medical LLM answer should act or escalate" width="900">
 </p>
 
-> **medical-openjev** is the safety traffic light for medical AI agents. It does not generate a diagnosis. Instead, it decides whether a model's current answer is sufficiently trustworthy to **act**, or whether the case should be **escalated** for deeper questioning or human review.
+> **medical-openjev** is an open-source, locally deployable, rigorously calibrated medical decision-gating model, positioned against closed-source safety guardrails such as TypeSafe Jev. It does not generate diagnostic answers. Instead, it assesses whether a current answer can be trusted and whether to **act**, escalate to a deeper consultation, or transfer the case for human review.
 
-## Why medical-openjev?
+## Overview
 
-Medical language models can sound confident even when their answers are unreliable. In our evaluation, ordinary LLM self-assessment reported an average confidence of **0.74** for answers whose actual accuracy was only **0.28**.
+Ordinary LLM self-assessment can be severely overconfident. In our evaluation, an LLM reported a confidence of **0.74** despite an actual accuracy of only **0.28**.
 
-medical-openjev is an open-source, locally deployable, rigorously calibrated decision-gating model designed as an auditable alternative to closed safety guardrails such as TypeSafe Jev. It attaches a reliability score to any medical LLM output and converts that score into an operational decision:
+medical-openjev can be attached to any medical LLM. It provides a calibrated confidence score and an actionable decision: **`act`** or **`escalate`**.
 
 ```text
-Medical LLM response + clinical context
-                 │
-                 ▼
-          medical-openjev
-       ┌─────────┴──────────┐
-       ▼                    ▼
-     ACT              ESCALATE
-Use with care    Ask for missing evidence,
-                 route to a specialty, or
-                 hand off to a clinician
+Current medical LLM answer
+             │
+             ▼
+      medical-openjev
+      ┌──────┴──────┐
+      ▼             ▼
+     ACT        ESCALATE
+             Request missing evidence,
+             route to a specialty, or
+             transfer for human review
 ```
 
-## Key capabilities
+## Technical design
+
+The model uses a **frozen ModernBERT backbone** with two lightweight, pluggable heads:
+
+- **Evidence-sufficiency head** — assesses whether the available evidence is sufficient for the current answer.
+- **Specialty-routing head** — performs specialty routing.
+
+Training uses reinforcement learning with a strict proper scoring rule, directly optimizing calibration. The model supports millisecond-scale inference on a single GPU. Model weights and evaluation materials are openly available for audit.
+
+## Capabilities
 
 | Capability | What it provides |
 | --- | --- |
-| **Confidence gating** | A calibrated trust score and an actionable `act` / `escalate` decision for the output of any medical LLM. |
-| **Intelligent triage** | Specialty-aware routing for cases that require a more appropriate pathway. |
-| **Evidence-gap prompting** | Real-time identification of the missing clinical evidence needed before a response can be trusted. |
-| **High-risk interception** | Detection of confidently wrong outputs before they reach a downstream workflow or user. |
-| **Open and auditable evaluation** | Open weights and evaluation assets intended for transparent review and reproducible safety research. |
-
-## Design
-
-The core model combines a **frozen ModernBERT backbone** with two lightweight, pluggable heads:
-
-- **Evidence sufficiency head** — estimates whether the available evidence supports a safe decision.
-- **Specialty-routing head** — identifies the appropriate specialty or escalation path.
-
-Training uses reinforcement learning with a strict proper scoring rule, optimizing calibration directly rather than merely optimizing answer quality. The resulting gate is lightweight enough for **millisecond-scale, single-GPU inference** while retaining a transparent, modular architecture.
+| **Calibrated confidence scoring** | A calibrated confidence score and an actionable `act` / `escalate` decision for the output of any medical LLM. |
+| **Intelligent triage** | Specialty routing for intelligent triage. |
+| **Evidence-gap prompts** | Real-time prompts that identify gaps in the evidence collected during a consultation. |
+| **High-risk output interception** | Detection and interception of high-risk outputs that are wrong yet highly confident. |
+| **Open auditability** | Open model weights and evaluation materials available for audit. |
 
 ## Experimental snapshot
 
-The current results are based on **Qwen3.5-4B**. Compared with the base LLM and a random baseline, medical-openjev improves calibration and concentrates accuracy in its most-confident decisions.
+Current experiments are based on **Qwen3.5-4B**, compared with the Base LLM and a random baseline.
 
 | Metric | medical-openjev | Base LLM | Random | Outcome |
 | --- | ---: | ---: | ---: | --- |
 | ECE ↓ | **0.226** | 0.533 | 0.331 | **58% lower** than the Base LLM |
-| Brier score ↓ | **0.241** | 0.523 | 0.345 | Best overall |
-| AURC ↓ | **0.597** | 0.666 | 0.746 | Best across all methods |
-| Coverage accuracy @ 95% ↑ | **0.281** | 0.246 | 0.263 | Best overall |
-| Coverage @ 95% precision ↑ | **0.067** | 0.000 | 0.000 | Achieved only by medical-openjev |
+| Brier score ↓ | **0.241** | 0.523 | 0.345 | Approximately halved relative to the Base LLM |
+| AURC ↓ | **0.597** | 0.666 | 0.746 | Best among the three methods |
+| CovAcc@95% ↑ | **0.281** | 0.246 | 0.263 | Best overall |
+| Cov@95prec ↑ | **0.067** | 0.000 | 0.000 | Achieved only by medical-openjev |
 | Accuracy of top-confidence 10% ↑ | **0.667** | 0.333 | 0.167 | **2×** the Base LLM |
 
 <p align="center">
   <sub>↓ lower is better &nbsp;·&nbsp; ↑ higher is better</sub>
 </p>
 
-These results indicate substantially improved calibration on dermatology-oriented evaluation: the calibration error falls by roughly 58%, and accuracy in the top 10% confidence band doubles relative to the base model. Importantly, confidence becomes more monotonic with correctness—high confidence is more meaningfully associated with correct answers.
+On the dermatology (derm) evaluation, ECE decreases by about 58%, accuracy in the top-confidence 10% doubles relative to the Base LLM, and confidence is monotonically associated with correctness.
 
 ## Intended use
 
-medical-openjev is designed to sit alongside medical AI systems as a decision-safety layer. Typical uses include:
+medical-openjev can be attached to medical LLMs as a decision-gating layer to:
 
-- Adding a trustworthy confidence signal to a medical LLM or agent.
-- Routing uncertain cases to deeper questioning, another specialty, or a human reviewer.
-- Surfacing missing evidence before an agent acts on a recommendation.
-- Building safer research prototypes for medical-agent workflows.
+- provide calibrated confidence scores and `act` / `escalate` decisions;
+- route cases for intelligent triage;
+- identify evidence gaps during a consultation; and
+- intercept high-risk outputs that are wrong yet highly confident.
 
 ## Safety notice
 
-> [!WARNING]
-> **Research use only.** medical-openjev is not a medical device and must not be used as a substitute for professional clinical judgment, diagnosis, treatment, or emergency care. Its outputs are decision-support signals, not clinical determinations. Any deployment involving patients requires appropriate validation, governance, and qualified human oversight.
+> **Research use only.** medical-openjev is not a clinical device.
 
-## Roadmap
-
-- [ ] Release model weights and inference package
-- [ ] Release evaluation datasets, protocols, and reproducibility scripts
-- [ ] Publish the technical report on arXiv
-- [ ] Expand validation across specialties, languages, and clinical settings
-
-## Team
+## Team and affiliations
 
 | Person | Role | Affiliation |
 | --- | --- | --- |
@@ -108,15 +98,11 @@ medical-openjev is designed to sit alongside medical AI systems as a decision-sa
 | Ruifan Zuo | Student Project Leadership | Shandong University |
 | Guocheng Hu | Student Project Leadership | Shandong University |
 | Ziyang Meng | Team Member | City University of Hong Kong (Dongguan) |
-| Dai Zichao | Contributor | Shandong University |
-| Zhao Qichao | Contributor | Tsinghua University |
+| Dai Zichao | — | Shandong University |
+| Zhao Qichao | — | Tsinghua University |
 | Rui Wang | Medical Support | Qingdao Endocrine and Diabetes Hospital |
-| San Zhang | Medical Support | Affiliation to be announced |
+| San Zhang | Medical Support | Not specified |
 
-## Links
-
-- [arXiv paper](https://arxiv.org) *(placeholder)*
-- [Hugging Face — Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) *(temporary placeholder)*
 
 ## Citation
 
