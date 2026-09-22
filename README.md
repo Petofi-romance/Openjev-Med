@@ -83,7 +83,7 @@ medical-openjev can be attached to medical LLMs as a decision-gating layer to:
 
 - provide calibrated confidence scores and `act` / `escalate` decisions;
 - route cases for intelligent triage;
-- identify evidence gaps during a consultation; and
+- identify evidence gaps during a consultation; 
 - intercept high-risk outputs that are wrong yet highly confident.
 
 ## Safety notice
