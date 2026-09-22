@@ -10,13 +10,13 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org"><strong>arXiv Paper ↗</strong></a>&nbsp;&nbsp;·&nbsp;&nbsp;
-  <a href="https://huggingface.co/Qwen/Qwen3.5-4B"><strong>Hugging Face Model ↗</strong></a>
+  <a href="https://arxiv.org">📄 arXiv</a>&nbsp;·&nbsp;
+  <a href="https://huggingface.co/Qwen/Qwen3.5-4B">🤗 HFPaper</a>
 </p>
 
-<p align="center">
-  <code>Local deployment · Single GPU</code>&nbsp;&nbsp;
-  <code>Research only</code>
+<p>
+  <img src="web/assets/badge-research-only.svg" alt="Use: Research only">
+  <img src="web/assets/badge-base-llm.svg" alt="Base LLM: Qwen3.5-4B">
 </p>
 
 <p align="center">
