@@ -75,7 +75,7 @@ Current experiments are based on **Qwen3.5-4B**, compared with the Base LLM and 
   <sub>↓ lower is better &nbsp;·&nbsp; ↑ higher is better</sub>
 </p>
 
-On the dermatology (derm) evaluation, ECE decreases by about 58%, accuracy in the top-confidence 10% doubles relative to the Base LLM, and confidence is monotonically associated with correctness.
+On the  evaluation, ECE decreases by about 58%, accuracy in the top-confidence 10% doubles relative to the Base LLM, and confidence is monotonically associated with correctness.
 
 ## Intended use
 
