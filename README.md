@@ -14,10 +14,7 @@
   <a href="https://huggingface.co/Qwen/Qwen3.5-4B">🤗 HFPaper</a>
 </p>
 
-<p>
-  <img src="web/assets/badge-research-only.svg" alt="Use: Research only">
-  <img src="web/assets/badge-base-llm.svg" alt="Base LLM: Qwen3.5-4B">
-</p>
+
 
 <p align="center">
   <img src="web/assets/medical-openjev-method.svg" alt="medical-openjev evaluates evidence sufficiency and specialty routing to decide whether a medical LLM output should act or escalate" width="900">
