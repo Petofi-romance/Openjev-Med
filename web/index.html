@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="medical-openjev is an open, locally deployable calibrated decision gate for trustworthy medical AI agents.">
+    <meta name="description" content="medical-openjev is an open-source, locally deployable, rigorously calibrated medical decision-gating model.">
     <meta name="theme-color" content="#ffffff">
-    <title>medical-openjev · Calibrated medical AI safety</title>
+    <title>medical-openjev · Calibrated medical decision gating</title>
     <link rel="icon" href="assets/medical-openjev-method.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="Openjev-Med/styles.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -19,7 +19,7 @@
             <span class="project-mark" aria-hidden="true">+</span>
             <h1>medical-open<span>jev</span></h1>
           </div>
-          <p class="tagline">A calibrated decision gate for trustworthy medical AI agents.</p>
+          <p class="tagline">An open-source, locally deployable, rigorously calibrated medical decision-gating model.</p>
           <p class="author-line">
             Tian Gan<sup>1</sup>, Ruifan Zuo<sup>1</sup>, Guocheng Hu<sup>1</sup>, Ziyang Meng<sup>2</sup>, Dai Zichao<sup>1</sup>, Zhao Qichao<sup>3</sup>, Rui Wang<sup>4</sup>, San Zhang
           </p>
@@ -43,7 +43,7 @@
           <div class="section-heading">
             <p class="kicker">METHOD</p>
             <h2>Decision gating, not answer generation.</h2>
-            <p>medical-openjev does not generate a diagnosis. It evaluates whether a medical AI response has enough support to <strong>act</strong>, or should be <strong>escalated</strong> for deeper questioning, specialty routing, or human review.</p>
+            <p>medical-openjev does not generate diagnostic answers. It determines whether an upstream medical LLM's current answer is trustworthy enough to <strong>act</strong>, or should be <strong>escalated</strong> for deeper inquiry or human review.</p>
           </div>
           <img class="method-figure" src="assets/medical-openjev-method.svg" alt="A medical language model response passes through medical-openjev and is selected to act or escalate." width="1200" height="480">
           <div class="method-notes">
@@ -53,11 +53,11 @@
             </div>
             <div>
               <h3>Objective</h3>
-              <p>Reinforcement learning with a strict proper scoring rule optimizes calibration directly, rather than optimizing answer quality alone.</p>
+              <p>Reinforcement learning with a strict proper scoring rule directly optimizes calibration.</p>
             </div>
             <div>
               <h3>Output</h3>
-              <p>A calibrated trust score plus an operational <code>act</code> or <code>escalate</code> decision for an upstream medical LLM.</p>
+              <p>A calibrated confidence score plus an operational <code>act</code> or <code>escalate</code> decision for an upstream medical LLM.</p>
             </div>
           </div>
         </div>
@@ -67,8 +67,8 @@
         <div class="container">
           <div class="section-heading">
             <p class="kicker">RESULTS</p>
-            <h2>Calibration improves when confidence must be earned.</h2>
-            <p>Current results use <strong>Qwen3.5-4B</strong>. In dermatology-oriented evaluation, medical-openjev achieved an ECE of <strong>0.226</strong>—<strong>58% lower</strong> than the Base LLM—and reached <strong>0.667</strong> accuracy in its top-confidence 10%, or <strong>2×</strong> the Base LLM.</p>
+            <h2>Calibration on the dermatology (derm) evaluation.</h2>
+            <p>Current experiments use <strong>Qwen3.5-4B</strong>. Conventional LLM self-assessment was severely overconfident: confidence was <strong>0.74</strong> despite an actual accuracy of only <strong>0.28</strong>. medical-openjev achieved an ECE of <strong>0.226</strong>—about <strong>58% lower</strong> than the Base LLM—and reached <strong>0.667</strong> accuracy in its top-confidence 10%, or <strong>2×</strong> the Base LLM.</p>
           </div>
           <div class="table-wrap">
             <table>
@@ -77,10 +77,10 @@
               </thead>
               <tbody>
                 <tr><th scope="row">ECE ↓</th><td><strong>0.226</strong></td><td>0.533</td><td>0.331</td><td>58% lower than Base LLM</td></tr>
-                <tr><th scope="row">Brier score ↓</th><td><strong>0.241</strong></td><td>0.523</td><td>0.345</td><td>Best overall</td></tr>
-                <tr><th scope="row">AURC ↓</th><td><strong>0.597</strong></td><td>0.666</td><td>0.746</td><td>Best across methods</td></tr>
-                <tr><th scope="row">Coverage accuracy @ 95% ↑</th><td><strong>0.281</strong></td><td>0.246</td><td>0.263</td><td>Best overall</td></tr>
-                <tr><th scope="row">Coverage @ 95% precision ↑</th><td><strong>0.067</strong></td><td>0.000</td><td>0.000</td><td>Achieved only here</td></tr>
+                <tr><th scope="row">Brier score ↓</th><td><strong>0.241</strong></td><td>0.523</td><td>0.345</td><td>Approximately halved relative to the Base LLM</td></tr>
+                <tr><th scope="row">AURC ↓</th><td><strong>0.597</strong></td><td>0.666</td><td>0.746</td><td>Best among the three methods</td></tr>
+                <tr><th scope="row">CovAcc@95% ↑</th><td><strong>0.281</strong></td><td>0.246</td><td>0.263</td><td>Best overall</td></tr>
+                <tr><th scope="row">Cov@95prec ↑</th><td><strong>0.067</strong></td><td>0.000</td><td>0.000</td><td>Achieved only by medical-openjev</td></tr>
                 <tr><th scope="row">Accuracy of top-confidence 10% ↑</th><td><strong>0.667</strong></td><td>0.333</td><td>0.167</td><td>2× Base LLM</td></tr>
               </tbody>
             </table>
@@ -93,13 +93,13 @@
         <div class="container">
           <div class="section-heading">
             <p class="kicker">APPLICATIONS</p>
-            <h2>Built for safer medical-agent workflows.</h2>
+            <h2>Capabilities for medical LLM workflows.</h2>
           </div>
           <ul class="feature-list">
-            <li><strong>Confidence gating</strong><span>Attach a calibrated trust score and actionable decision to a medical LLM response.</span></li>
-            <li><strong>Intelligent triage</strong><span>Route uncertain cases to a specialty, deeper inquiry, or a human reviewer.</span></li>
-            <li><strong>Evidence-gap prompting</strong><span>Identify the evidence still needed before a response can be trusted.</span></li>
-            <li><strong>High-risk interception</strong><span>Catch confidently wrong outputs before they enter a downstream workflow.</span></li>
+            <li><strong>Calibrated confidence scoring</strong><span>Attach a calibrated confidence score and actionable decision to any medical LLM answer.</span></li>
+            <li><strong>Intelligent triage</strong><span>Perform specialty routing for intelligent triage.</span></li>
+            <li><strong>Evidence-gap prompts</strong><span>Identify evidence gaps in real time during a consultation.</span></li>
+            <li><strong>High-risk output interception</strong><span>Detect and intercept outputs that are wrong yet highly confident.</span></li>
           </ul>
         </div>
       </section>
@@ -108,7 +108,7 @@
         <div class="container notice">
           <p class="kicker">SAFETY NOTICE</p>
           <h2>Research use only.</h2>
-          <p>medical-openjev is not a medical device and is not a substitute for professional clinical judgment, diagnosis, treatment, or emergency care. Its outputs are decision-support signals, not clinical determinations. Patient-facing use requires appropriate validation, governance, and qualified human oversight.</p>
+          <p>medical-openjev is not a clinical device.</p>
         </div>
       </section>
 
@@ -126,10 +126,10 @@
                 <tr><td>Ruifan Zuo</td><td>Student Project Leadership</td><td>Shandong University</td></tr>
                 <tr><td>Guocheng Hu</td><td>Student Project Leadership</td><td>Shandong University</td></tr>
                 <tr><td>Ziyang Meng</td><td>Team Member</td><td>City University of Hong Kong (Dongguan)</td></tr>
-                <tr><td>Dai Zichao</td><td>Contributor</td><td>Shandong University</td></tr>
-                <tr><td>Zhao Qichao</td><td>Contributor</td><td>Tsinghua University</td></tr>
+                <tr><td>Dai Zichao</td><td>—</td><td>Shandong University</td></tr>
+                <tr><td>Zhao Qichao</td><td>—</td><td>Tsinghua University</td></tr>
                 <tr><td>Rui Wang</td><td>Medical Support</td><td>Qingdao Endocrine and Diabetes Hospital</td></tr>
-                <tr><td>San Zhang</td><td>Medical Support</td><td>Affiliation to be announced</td></tr>
+                <tr><td>San Zhang</td><td>Medical Support</td><td>Not specified</td></tr>
               </tbody>
             </table>
           </div>
@@ -137,10 +137,10 @@
       </section>
 
       <section class="section section-muted">
-        <div class="container roadmap">
-          <p class="kicker">NEXT</p>
-          <h2>Open weights, evaluation, and reproducibility.</h2>
-          <p>Planned releases include model weights, an inference package, evaluation data and protocols, reproducibility scripts, and broader validation across specialties, languages, and clinical settings.</p>
+        <div class="container openness">
+          <p class="kicker">OPENNESS</p>
+          <h2>Open weights and evaluation, fully auditable.</h2>
+          <p>Model weights and evaluation materials are openly available for transparent, auditable review.</p>
         </div>
       </section>
     </main>
@@ -148,7 +148,7 @@
     <footer class="site-footer">
       <div class="container footer-inner">
         <span>medical-open<span>jev</span></span>
-        <span>Calibrated, transparent, human-supervised medical AI research.</span>
+        <span>Open, calibrated medical decision-gating research.</span>
         <span>© <span id="year"></span></span>
       </div>
     </footer>
