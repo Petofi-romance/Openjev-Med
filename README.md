@@ -134,5 +134,6 @@ If you use medical-openjev in your research, please cite the forthcoming paper. 
 ---
 
 <p align="center">
-  Built for transparent, calibrated, and human-supervised medical AI research.
+  ⭐ If medical-openjev helps your research or projects, please give us a star! ⭐
+  Made with by the Ilearn  Research Team
 </p>
