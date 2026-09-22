@@ -1,5 +1,5 @@
 <h1 align="center">
-  medical-openjev
+  Medical-Openjev
   <img src="web/logo/清华大学-logo-1024px.png" alt="Tsinghua University" height="42" align="absmiddle">
   <img src="web/logo/山东大学-logo-1024px.png" alt="Shandong University" height="42" align="absmiddle">
   <img src="web/logo/香港城市大学（东莞）-logo-1024px.png" alt="City University of Hong Kong (Dongguan)" height="42" align="absmiddle">
